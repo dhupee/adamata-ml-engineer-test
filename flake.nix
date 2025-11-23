@@ -79,9 +79,10 @@
             '';
           };
 
-          uv = pkgs.mkShell {
+          utils = pkgs.mkShell {
             packages = with pkgs; [
               uv
+              gdown
             ];
           };
         };
