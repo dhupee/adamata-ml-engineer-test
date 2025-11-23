@@ -3,5 +3,10 @@ name = "bsort"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = "3.11"
+requires-python = "==3.11.13"
 dependencies = []
+
+[dependency-groups]
+dev = [
+    "label-studio>=1.21.0",
+]
