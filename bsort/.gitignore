@@ -1,0 +1,20 @@
+# Python-generated files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python/
+
+# uv-specific files
+.venv/
+
+# Editor/IDE-specific files
+.vscode/
+.idea/
+*.swp
+*.bak
+*~
+
+# Operating System files
+.DS_Store
+Thumbs.db
