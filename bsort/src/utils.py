@@ -1,18 +1,20 @@
 """Utility functions for bsort."""
 
 import os
+from os.path import exists
 import zipfile
 from pathlib import Path
 from typing import Optional
 
 import gdown
+import requests
 
 
 def download_and_extract_dataset(url: str, output_path: str) -> str:
     """Download and extract dataset from Google Drive.
 
     Args:
-        url: Google Drive URL
+        url: Roboflow Dataset URL
         output_path: Output directory path
 
     Returns:
@@ -21,21 +23,32 @@ def download_and_extract_dataset(url: str, output_path: str) -> str:
     Raises:
         Exception: If download or extraction fails
     """
-    output_path = Path(output_path)
-    zip_path = output_path / "dataset.zip"
+
+    zip_path = output_path + "dataset.zip"
 
     # Create directory if not exists
-    output_path.mkdir(parents=True, exist_ok=True)
+    if not os.path.exists(output_path):
+        Path(output_path).mkdir(parents=True, exist_ok=True)
 
-    # Download
-    gdown.download(url, str(zip_path), fuzzy=True)
+    try:
+        # Send GET request with stream=True to handle large files
+        response = requests.get(url, stream=True, allow_redirects=True)
+        response.raise_for_status()  # Raise an exception for bad status codes
+
+        # Write the content to a file
+        with open(zip_path, "wb") as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error downloading the dataset: {e}")
 
     # Extract
     with zipfile.ZipFile(zip_path, "r") as zip_ref:
         zip_ref.extractall(output_path)
 
     # Find extracted directory
-    extracted_dirs = [d for d in output_path.iterdir() if d.is_dir()]
+    extracted_dirs = [d for d in Path(output_path).iterdir() if d.is_dir()]
     if extracted_dirs:
         return str(extracted_dirs[0])
     else:
