@@ -3,7 +3,7 @@ name = "bsort"
 version = "0.1.0"
 description = "ML Pipeline for Object Detection"
 readme = "README.md"
-requires-python = "==3.11.13"
+requires-python = ">=3.11"
 authors = [
     {name = "Daffa Haj Tsaqif", email = "narutohaj00@gmail.com"},
 ]
