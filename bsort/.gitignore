@@ -16,6 +16,12 @@ __pycache__/
 *.bak
 *~
 
+# YOLO files
+*.pt 
+*.onnx 
+data
+bsort-training
+
 # Operating System files
 .DS_Store
 Thumbs.db

@@ -24,16 +24,7 @@ def run_inference(config: Config, image_path: str) -> Dict[str, Any]:
         FileNotFoundError: If no trained model found
     """
     # Load model (prioritize ONNX for inference)
-    model_paths = [
-        "runs/detect/train/weights/best.onnx",
-        "bsort_trained_model.pt",
-    ]
-
-    model_path = None
-    for path in model_paths:
-        if Path(path).exists():
-            model_path = path
-            break
+    model_path = Config.infer_model_path
 
     if model_path is None:
         raise FileNotFoundError("No trained model found for inference")

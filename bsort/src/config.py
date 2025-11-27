@@ -1,7 +1,7 @@
 """Configuration management for bsort."""
 
-from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from dataclasses import dataclass, field
+from typing import Any, Dict
 
 import yaml
 
@@ -18,8 +18,8 @@ class Config:
         batch_size: Training batch size
         learning_rate: Learning rate for training
         model_name: Pretrained model name
-        wandb_project: Weights & Biases project name
-        wandb_entity: Weights & Biases entity/username
+        model_path: Path for custom model created
+        infer_model_path: Path for custom model used in inference
         export_formats: List of formats to export model to
     """
 
@@ -34,16 +34,16 @@ class Config:
     learning_rate: float = 0.01
     model_name: str = "yolo11n.pt"
 
-    # W&B configuration
-    wandb_project: str = "adamata-bsort"
-    wandb_entity: Optional[str] = None
+    # Model configuration
+    model_path: str = "bsort_custom_model.pt"
+    infer_model_path: str = "bsort_custom_model.pt"
 
     # Export configuration
-    export_formats: list = []
+    export_formats: list = field(default_factory=lambda: ["onnx", "torchscript"])
 
     def __post_init__(self):
         """Initialize default values."""
-        if self.export_formats is None:
+        if self.export_formats == []:
             self.export_formats = ["onnx", "torchscript"]
 
     @classmethod
@@ -79,7 +79,7 @@ class Config:
             "batch_size": self.batch_size,
             "learning_rate": self.learning_rate,
             "model_name": self.model_name,
-            "wandb_project": self.wandb_project,
-            "wandb_entity": self.wandb_entity,
+            "model_path": self.model_path,
+            "infer_model_path": self.infer_model_path,
             "export_formats": self.export_formats,
         }

@@ -1,12 +1,9 @@
 """Utility functions for bsort."""
 
 import os
-from os.path import exists
 import zipfile
 from pathlib import Path
-from typing import Optional
 
-import gdown
 import requests
 
 
@@ -24,7 +21,7 @@ def download_and_extract_dataset(url: str, output_path: str) -> str:
         Exception: If download or extraction fails
     """
 
-    zip_path = output_path + "dataset.zip"
+    zip_path = output_path + "/" + "dataset.zip"
 
     # Create directory if not exists
     if not os.path.exists(output_path):
@@ -48,16 +45,12 @@ def download_and_extract_dataset(url: str, output_path: str) -> str:
         zip_ref.extractall(output_path)
 
     # Find extracted directory
-    extracted_dirs = [d for d in Path(output_path).iterdir() if d.is_dir()]
-    if extracted_dirs:
-        return str(extracted_dirs[0])
-    else:
-        return str(output_path)
+    return output_path
 
 
 def setup_directories() -> None:
     """Create necessary directories for training."""
-    directories = ["data", "runs"]
+    directories = ["data"]
 
     for directory in directories:
         Path(directory).mkdir(parents=True, exist_ok=True)

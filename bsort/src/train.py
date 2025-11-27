@@ -1,10 +1,8 @@
 """Training module for bsort."""
 
-import os
 from pathlib import Path
 from typing import Any, Dict
 
-import wandb
 from ultralytics import YOLO
 
 from src.config import Config
@@ -26,13 +24,6 @@ def train_model(config: Config) -> Dict[str, Any]:
     """
     # Setup directories
     setup_directories()
-
-    # Initialize W&B
-    wandb.init(
-        project=config.wandb_project,
-        entity=config.wandb_entity,
-        config=config.to_dict(),
-    )
 
     try:
         # Download dataset if not exists
@@ -56,36 +47,22 @@ def train_model(config: Config) -> Dict[str, Any]:
             name="run",
         )
 
-        # Log metrics to W&B
-        if hasattr(results, "results_dict"):
-            wandb.log(results.results_dict)
-
-        # Export model
+        # Export model in different format
         export_paths = {}
         for fmt in config.export_formats:
             try:
                 export_path = model.export(format=fmt)
                 export_paths[fmt] = export_path
-                wandb.save(export_path)
                 print(f"✓ Model exported to {fmt.upper()} format: {export_path}")
             except Exception as e:
                 print(f"✗ Failed to export to {fmt}: {e}")
 
         # Save model
-        model_path = "bsort_trained_model.pt"
+        model_path = config.model_path
         model.save(model_path)
-        wandb.save(model_path)
         print(f"✓ Model saved as PyTorch: {model_path}")
 
-        wandb.finish()
-
-        return {
-            "success": True,
-            "model_path": model_path,
-            "export_paths": export_paths,
-            "results": results.results_dict if hasattr(results, "results_dict") else {},
-        }
+        return {"success": True, "model_path": model_path, "export_paths": export_paths, "results": results}
 
     except Exception as e:
-        wandb.finish()
         raise e

@@ -9,13 +9,14 @@ authors = [
 ]
 dependencies = [
   "ultralytics==8.3.232",
-  "wandb==0.21.0",
   "requests==2.32.5",
   "opencv-python==4.12.0.88",
   "pandas==2.2.3",
   "numpy==2.2.6",
   "PyYAML==6.0.3",
   "pillow==11.3.0",
+  "click>=8.3.1",
+  "onnx>=1.19.1",
 ]
 
 [dependency-groups]
