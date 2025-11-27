@@ -1,0 +1,17 @@
+# Data configuration
+dataset_url: "https://drive.google.com/file/d/1vbMFTe2E5OHp2h5o_YL-RUoIFKxsrZWT/view?usp=sharing"
+dataset_path: "data"
+image_size: 320
+
+# Training configuration
+epochs: 100
+batch_size: 16
+learning_rate: 0.01
+model_name: "yolo11n.pt"
+
+# W&B configuration
+wandb_project: "adamata-bsort"
+wandb_entity: null
+
+# Export configuration
+export_formats: ["onnx", "torchscript"]
