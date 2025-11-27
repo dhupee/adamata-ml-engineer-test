@@ -1,10 +1,11 @@
 """Inference module for bsort."""
 
 from pathlib import Path
-from typing import List, Dict, Any
-from ultralytics import YOLO
+from typing import Any, Dict, List
+
 import cv2
 import numpy as np
+from ultralytics import YOLO
 
 from src.config import Config
 
@@ -23,7 +24,10 @@ def run_inference(config: Config, image_path: str) -> Dict[str, Any]:
         FileNotFoundError: If no trained model found
     """
     # Load model (prioritize ONNX for inference)
-    model_paths = ["runs/detect/train/weights/best.onnx", "bsort_trained_model.pt"]
+    model_paths = [
+        "runs/detect/train/weights/best.onnx",
+        "bsort_trained_model.pt",
+    ]
 
     model_path = None
     for path in model_paths:
@@ -42,7 +46,11 @@ def run_inference(config: Config, image_path: str) -> Dict[str, Any]:
     # Process results
     detections = []
     for i, r in enumerate(results):
-        image_detections = {"image_index": i, "num_detections": len(r.boxes), "detections": []}
+        image_detections = {
+            "image_index": i,
+            "num_detections": len(r.boxes),
+            "detections": [],
+        }
 
         if len(r.boxes) > 0:
             for j, box in enumerate(r.boxes):
@@ -56,7 +64,12 @@ def run_inference(config: Config, image_path: str) -> Dict[str, Any]:
 
         detections.append(image_detections)
 
-    return {"model_path": model_path, "image_path": image_path, "detections": detections, "num_images": len(results)}
+    return {
+        "model_path": model_path,
+        "image_path": image_path,
+        "detections": detections,
+        "num_images": len(results),
+    }
 
 
 def visualize_inference(image_path: str, detections: List[Dict], output_path: str) -> None:
@@ -84,7 +97,21 @@ def visualize_inference(image_path: str, detections: List[Dict], output_path: st
         label = f"Class {class_id}: {confidence:.2f}"
         label_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]
 
-        cv2.rectangle(image, (x1, y1 - label_size[1] - 5), (x1 + label_size[0], y1), (255, 0, 0), -1)
-        cv2.putText(image, label, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+        cv2.rectangle(
+            image,
+            (x1, y1 - label_size[1] - 5),
+            (x1 + label_size[0], y1),
+            (255, 0, 0),
+            -1,
+        )
+        cv2.putText(
+            image,
+            label,
+            (x1, y1 - 5),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.5,
+            (255, 255, 255),
+            1,
+        )
 
     cv2.imwrite(output_path, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))

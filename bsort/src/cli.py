@@ -1,9 +1,10 @@
 """Command Line Interface for bsort."""
 
 import click
+
 from src.config import Config
-from src.train import train_model
 from src.infer import run_inference
+from src.train import train_model
 
 
 @click.group()

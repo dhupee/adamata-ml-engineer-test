@@ -2,7 +2,8 @@
 
 import os
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
+
 import wandb
 from ultralytics import YOLO
 
@@ -27,7 +28,11 @@ def train_model(config: Config) -> Dict[str, Any]:
     setup_directories()
 
     # Initialize W&B
-    wandb.init(project=config.wandb_project, entity=config.wandb_entity, config=config.to_dict())
+    wandb.init(
+        project=config.wandb_project,
+        entity=config.wandb_entity,
+        config=config.to_dict(),
+    )
 
     try:
         # Download dataset if not exists

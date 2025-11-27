@@ -1,8 +1,9 @@
 """Configuration management for bsort."""
 
-from typing import Optional, Dict, Any
-import yaml
 from dataclasses import dataclass
+from typing import Any, Dict, Optional
+
+import yaml
 
 
 @dataclass
@@ -38,7 +39,7 @@ class Config:
     wandb_entity: Optional[str] = None
 
     # Export configuration
-    export_formats: list = None
+    export_formats: list = []
 
     def __post_init__(self):
         """Initialize default values."""

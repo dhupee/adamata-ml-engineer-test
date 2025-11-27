@@ -1,10 +1,11 @@
 """Utility functions for bsort."""
 
 import os
-import gdown
 import zipfile
 from pathlib import Path
 from typing import Optional
+
+import gdown
 
 
 def download_and_extract_dataset(url: str, output_path: str) -> str:
@@ -58,7 +59,12 @@ def validate_config(config_dict: dict) -> bool:
     Returns:
         True if valid, False otherwise
     """
-    required_fields = ["dataset_url", "epochs", "batch_size", "learning_rate"]
+    required_fields = [
+        "dataset_url",
+        "epochs",
+        "batch_size",
+        "learning_rate",
+    ]
 
     for field in required_fields:
         if field not in config_dict:
