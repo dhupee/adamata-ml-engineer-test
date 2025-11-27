@@ -7,6 +7,7 @@ __pycache__/
 
 # uv-specific files
 .venv/
+*.egg-info
 
 # Editor/IDE-specific files
 .vscode/
