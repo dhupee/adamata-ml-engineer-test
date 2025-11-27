@@ -15,19 +15,26 @@ dependencies = [
   "pandas==2.2.3",
   "numpy==2.2.6",
   "PyYAML==6.0.3",
-  "pillow==11.3.0"
+  "pillow==11.3.0",
+  "gdown>=5.2.0",
 ]
 
 [project.scripts]
-bsort = "bsort.cli:main"
+bsort = "src.cli:main"
 
 [project.urls]
 "Homepage" = "https://github.com/dhupee/adamata-ml-engineer-test"
 "Bug Reports" = "https://github.com/dhupee/adamata-ml-engineer-test/issues"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["src"]
+
+[tool.setuptools.package-dir]
+bsort = "src"
 
 [tool.black]
 line-length = 88
@@ -36,6 +43,14 @@ target-version = ['py311']
 [tool.isort]
 profile = "black"
 multi_line_output = 3
+
+[tool.pylint.'messages control']
+disable = [
+    "C0103",
+    "R0903",
+    "R0913",
+    "R0914",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
